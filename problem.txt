@@ -1,1 +1,4 @@
 how to split the file is this in the code file
+sender is interface that only udpsender use this 
+no way to choose from udp
+what does 8192 mean
