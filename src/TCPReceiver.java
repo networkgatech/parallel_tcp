@@ -36,6 +36,7 @@ public class TCPReceiver implements Runnable{
 	filename = t.nextToken();
 	bytesToReceive = new Integer(t.nextToken()).intValue();
 	theOutstream.write((new String("GOT_IT")).getBytes());
+	System.out.println("dalian");
     }
 
     public TCPReceiver(int port, ByteBuffer lb) throws IOException
