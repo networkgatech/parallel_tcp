@@ -19,8 +19,8 @@ public class FileReceiver{ ////
 	int[] thePorts = new int[portNumber]; // thePorts, port ID
 	
 	TCPReceiver sh = new TCPReceiver(8080); // -> ?? difference with two parameter situation?
-	String filename = sh.filename; 
-	long filesize = sh.bytesToReceive;
+	String filename = sh.filename;  // 1个parameter 应该只是知道了port，新建的thread也只是负责收filename和bytes to receive
+	long filesize = sh.bytesToReceive; // 2 个parameter 是指定了接收的部分存在哪个buffer
 	sh.close();
 	
 	long start = 0L;
