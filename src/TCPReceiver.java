@@ -20,29 +20,30 @@ public class TCPReceiver implements Runnable{
     InputStream theInstream;
     OutputStream theOutstream;
     
-    public TCPReceiver(int port) throws IOException
+    public TCPReceiver(int port) throws IOException 
+    // when port number is the only input parameter
     {
 	// Init stuff
-	listener = new ServerSocket(port);
-	buffer = new byte[8192];
+	listener = new ServerSocket(port); //establish new server socket at this port
+	buffer = new byte[8192]; 
 	System.out.println(" -- Ready to receive information on port: "+port);
-	s = listener.accept();
+	s = listener.accept(); // ServerSocket.accept() returns when a client connection is received
 	
-	theInstream = s.getInputStream();
-	theOutstream = s.getOutputStream();
+	theInstream = s.getInputStream(); // contains filename
+	theOutstream = s.getOutputStream(); // -> what 
 	length = theInstream.read(buffer);
 	initString = "Recieved-"+new String(buffer, 0, length);
 	StringTokenizer t = new StringTokenizer(initString, "::");
-	filename = t.nextToken();
-	bytesToReceive = new Integer(t.nextToken()).intValue();
-	theOutstream.write((new String("GOT_IT")).getBytes());
-	System.out.println("dalian");
+	filename = t.nextToken(); // filename followed by "::"
+	bytesToReceive = new Integer(t.nextToken()).intValue(); // also contains total bytes to recieve
+	theOutstream.write((new String("GOT_IT")).getBytes()); // change the content of the socket, hence the sender will recieve this output message
+	//System.out.println("dalian");
     }
 
     public TCPReceiver(int port, ByteBuffer lb) throws IOException
     {
 	// Init stuff
-    this.largeBuffer = lb;
+    this.largeBuffer = lb;   // -> this.largeBuffer of the port will point to the ByteBuffer allocated
 	listener = new ServerSocket(port);
 	buffer = new byte[8192];
 	
@@ -52,7 +53,7 @@ public class TCPReceiver implements Runnable{
     }
     
     public void close() throws IOException {
-    	s.close();
+    	s.close(); // stop the socket
     }
     
 	public void receive() throws IOException {
@@ -72,7 +73,7 @@ public class TCPReceiver implements Runnable{
 	bytesToReceive = new Integer(t.nextToken()).intValue();
 //	System.out.print(s.getLocalPort()+"---"+bytesToReceive+"-----"+largeBuffer.capacity());
 //	dst = new byte[(int)bytesToReceive];
-	startPointer = new Long(t.nextToken()).longValue();
+	startPointer = new Long(t.nextToken()).longValue(); // the start pointer is never used ???
 	
 //	System.out.println("  -- The file will be saved as: "+filename);
 //	System.out.println("  -- Expecting to receive: "+bytesToReceive+" bytes");
@@ -108,7 +109,7 @@ public class TCPReceiver implements Runnable{
 	length = theInstream.read(tmp);
 	largeBuffer.put(tmp);
 
-	s.close();
+	s.close(); // close after the expected recieving bytes are all recieved
 //	System.out.println(largeBuffer.capacity()+"---"+dst.length);
 //	largeBuffer.flip();
 //	largeBuffer.get(dst, 0, dst.length);
