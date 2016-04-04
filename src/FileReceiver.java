@@ -2,24 +2,24 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.io.*;
-public class FileReceiver{
+public class FileReceiver{ ////
 
     public static void main(String[] args) throws Exception{
 	int portNumber = 0;
-    List<Thread> ls = new ArrayList<Thread>();//
-    List<ByteBuffer> buffer = new ArrayList<>();
+    List<Thread> ls = new ArrayList<Thread>(); // ls: each member thread is for one port
+    List<ByteBuffer> buffer = new ArrayList<>();  // buffer : each memeber ByteBuffer is for one port
 
 	// Checking the arguments
 	if (args.length != 2) printError("Wrong number of arguments");
 	
 	if (!args[0].equals("tcp") && !args[0].equals("udp")) printError("Unrecognized protocol: "+args[0]);
 
-	portNumber = Integer.parseInt(args[1]);
+	portNumber = Integer.parseInt(args[1]);  // first parameter tcp/udp, second parameter number of ports
 	
-	int[] thePorts = new int[portNumber];
+	int[] thePorts = new int[portNumber]; // thePorts, port ID
 	
-	TCPReceiver sh = new TCPReceiver(8080);
-	String filename = sh.filename;
+	TCPReceiver sh = new TCPReceiver(8080); // -> ?? difference with two parameter situation?
+	String filename = sh.filename; 
 	long filesize = sh.bytesToReceive;
 	sh.close();
 	
@@ -27,35 +27,35 @@ public class FileReceiver{
 	
 	for (int i=0; i<portNumber; i++) {
 		thePorts[i] = 8081+i;
-		buffer.add(ByteBuffer.allocate((int)(filesize/portNumber+8192)));
+		buffer.add(ByteBuffer.allocate((int)(filesize/portNumber+8192))); // +8192 ensures every port with enough buffer size
 	}
 	
 	Thread t = null;
 	for (int i=0; i<portNumber; i++) {
-		t = new Thread(new TCPReceiver(thePorts[i], buffer.get(i)));
-		t.start();
+		t = new Thread(new TCPReceiver(thePorts[i], buffer.get(i))); // new thread for each port receiving job
+		t.start(); // each thread start
 		ls.add(t);
 		start = System.nanoTime();
 	}
 	
 	try {  
         for(Thread thread : ls) 
-            thread.join(); 
-    } catch (InterruptedException e) {  
+            thread.join();  // this is to handle the thread in a sequence, the code after .join can only be handled after...
+    } catch (InterruptedException e) {  // ...the current thread is finished/dead.
         e.printStackTrace();  
     }
 	
-	FileOutputStream out = new FileOutputStream(filename);
-	byte[] bt = new byte[8192];
+	FileOutputStream out = new FileOutputStream(filename); // filename recieved from sender
+	byte[] bt = new byte[8192]; // bt -> buffer for one packet
 	for (ByteBuffer b : buffer) {
-		b.flip();
-		while (b.position()<b.limit()) {
+		b.flip(); // in this command, limit is set to current write position, read position is set to 0...
+		while (b.position()<b.limit()) { // ...to ensure the position READ start from zero to limit
 			b.get(bt, 0, (b.limit()-b.position()) < bt.length ? (b.limit()-b.position()) : bt.length);
-			out.write(bt);
+			out.write(bt); // write the result to output packet by packet /// ------? but why?
 		}
-		System.out.println("Thread done!");
+		System.out.println("Thread done!"); // Means the content of port receive is written to output file
 	}
-	out.close();
+	out.close(); // close the file
 	long end = System.nanoTime();
 	System.out.println((double)(start-end)/(long)1000000000);
     }
