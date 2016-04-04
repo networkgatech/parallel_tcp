@@ -60,6 +60,7 @@ public class FileReceiver{ ////
 	System.out.println((double)(start-end)/(long)1000000000);
     }
     
+    /////merge 其实没有用到
     public static void merge(FileOutputStream output, int portNumber) throws Exception {
 //    	RandomAccessFile ok = new RandomAccessFile(file, "rw");
 
