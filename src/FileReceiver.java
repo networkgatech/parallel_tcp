@@ -6,7 +6,7 @@ public class FileReceiver{
 
     public static void main(String[] args) throws Exception{
 	int portNumber = 0;
-    List<Thread> ls = new ArrayList<Thread>();
+    List<Thread> ls = new ArrayList<Thread>();//
     List<ByteBuffer> buffer = new ArrayList<>();
 
 	// Checking the arguments
