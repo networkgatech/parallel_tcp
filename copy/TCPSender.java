@@ -15,7 +15,7 @@ public class TCPSender implements Runnable {
 	private OutputStream theOutput;
 	private InputStream theInput;
 	
-	public TCPSender(File file, long pointer, long fileLength, InetAddress address, int port) throws IOException {
+	public TCPSender(InetAddress address, int port, File file, long pointer, long fileLength) throws IOException {
 		this.theFile = file;
 		this.pointer = pointer;
 		this.fileLength = fileLength;
