@@ -37,8 +37,6 @@ public static void main(String[] args) throws Exception
 	if (length%8192 != 0)
 		packet++;
 	long packetPerTCP = packet / portNumber;
-	if (packet%portNumber != 0)
-		packetPerTCP++;
 	long piecesSize = packetPerTCP * 8192;
 	long Pointer = 0L;
 	
