@@ -47,6 +47,7 @@ public class FileSender {
 		}
 		long pieceSize = packetPerTCP * 8192;
 		long Pointer = 0L;
+
 		TCPSender sender = new TCPSender(theAddress, 8080, theFile, 0L, 0L);
 		sender.ShakeHand();
 		Thread thread = null;
