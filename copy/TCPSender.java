@@ -23,7 +23,7 @@ public class TCPSender implements Runnable {
 		toPort = port;
 		msg = new byte[8192];
 		buffer = new byte[8192];
-		socket = new Socket(address, toPort);
+		socket = new Socket(toAddress, toPort);
 		theOutput = socket.getOutputStream();
 		theInput = socket.getInputStream();
 	}

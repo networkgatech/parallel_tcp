@@ -33,11 +33,13 @@ public static void main(String[] args) throws Exception
 	// Create the sender object
 	long length = theFile.length();
 	long currentSize = 0;
-	long packet = length / 8192;
-	if (length%8192 != 0)
+	long packet = length / 100;
+	if (length%100 != 0)
 		packet++;
 	long packetPerTCP = packet / portNumber;
-	long piecesSize = packetPerTCP * 8192;
+	if (packet%portNumber != 0)
+		packetPerTCP++;
+	long piecesSize = packetPerTCP * 100;
 	long Pointer = 0L;
 	
 	TCPSender sh = new TCPSender(theAddress, 8080, theFile, 0L, 0L);

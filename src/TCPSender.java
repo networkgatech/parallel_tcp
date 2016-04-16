@@ -35,8 +35,8 @@ public class TCPSender implements Runnable{
     	this.fileLength = filelength;
     	toPort = port;
     	toAddress = address;
-    	msg = new byte[8192];
-    	buffer = new byte[8192];
+    	msg = new byte[100];
+    	buffer = new byte[100];
     	s = new Socket(toAddress, toPort);
     	theOutstream = s.getOutputStream();
     	theInstream = s.getInputStream();
