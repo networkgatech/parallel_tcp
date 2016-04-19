@@ -9,10 +9,9 @@ public class FileReceiver{
     List<Thread> ls = new ArrayList<Thread>();
     List<ByteBuffer> buffer = new ArrayList<>();
 
-	// Checking the arguments
 	if (args.length != 2) printError("Wrong number of arguments");
 	
-	if (!args[0].equals("tcp") && !args[0].equals("udp")) printError("Unrecognized protocol: "+args[0]);
+	if (!args[0].equals("tcp")) printError("Unrecognized protocol: "+args[0]);
 
 	portNumber = Integer.parseInt(args[1]);
 	
@@ -57,38 +56,9 @@ public class FileReceiver{
 	}
 	out.close();
 	long end = System.nanoTime();
-	System.out.println((double)(start-end)/(long)1000000000);
+	System.out.println((double)(end-start)/(long)1000000000);
     }
     
-    public static void merge(FileOutputStream output, int portNumber) throws Exception {
-//    	RandomAccessFile ok = new RandomAccessFile(file, "rw");
-
-    	for (int i=0; i<portNumber; i++) {
-    		String filename = "Recieved-"+(8081+i)+"a.mkv";
-    		FileInputStream fs = new FileInputStream(new File(filename));
-    		byte[]b = new byte[1000];
-    		int n=0;
-    		while((n=fs.read(b)) != -1)
-    			output.write(b, 0, n);
-    		fs.close();
-    	}
-////    		RandomAccessFile read = new RandomAccessFile(new File("Recieved-8081a.mkv"), "r");
-//    		FileInputStream fs = new FileInputStream(new File("Recieved-8081a.mkv"));
-//    		byte[]b = new byte[1100];
-//    		int n=0;
-//    		while((n=fs.read(b)) != -1)
-//    			output.write(b, 0, n);
-//    		fs.close();
-//    		
-////    		read = new RandomAccessFile(new File("Recieved-8082a.mkv"), "r");
-//    		fs = new FileInputStream(new File("Recieved-8082a.mkv"));
-//    		b = new byte[1100];
-//    		n=0;
-//    		while((n=fs.read(b)) != -1)
-//    			output.write(b, 0, n);
-//    		fs.close();
-//    	ok.close();
-    }
 
 
     public static void printError(String error){

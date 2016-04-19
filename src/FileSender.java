@@ -13,7 +13,7 @@ public static void main(String[] args) throws Exception
 	// Checking the arguments
 	if (args.length != 4) printError("Wrong number of arguments");
 	
-	if (!args[0].equals("tcp") && !args[0].equals("udp")) printError("Unrecognized protocol: "+args[0]);
+	if (!args[0].equals("tcp")) printError("Unrecognized protocol: "+args[0]);
 	
 	int portNumber = Integer.parseInt(args[3]);
 	int[] thePorts = new int[portNumber];

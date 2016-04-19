@@ -13,9 +13,6 @@ public class TCPReceiver implements Runnable{
     List<byte[]> buffers;
     ByteBuffer largeBuffer;
     
-    FileOutputStream fileWriter;
-    RandomAccessFile randOutput;
-    
     long startPointer, bytesReceived, bytesToReceive;
     InputStream theInstream;
     OutputStream theOutstream;
@@ -58,49 +55,21 @@ public class TCPReceiver implements Runnable{
 	s = listener.accept();	
 	theInstream = s.getInputStream();
 	theOutstream = s.getOutputStream();
-	
-	// 1. Wait for a sender to transmit the filename
 
 	length = theInstream.read(buffer);
 	
-	initString = "Recieved-"+s.getLocalPort()+new String(buffer, 0, length);
-//	initString = "Recieved-"+new String(buffer, 0, length);
-	
+	initString = "Received-"+s.getLocalPort()+new String(buffer, 0, length);
 	StringTokenizer t = new StringTokenizer(initString, "::");
 	filename = t.nextToken();
 	bytesToReceive = new Integer(t.nextToken()).intValue();
-//	System.out.print(s.getLocalPort()+"---"+bytesToReceive+"-----"+largeBuffer.capacity());
-//	dst = new byte[(int)bytesToReceive];
 	startPointer = new Long(t.nextToken()).longValue();
 	
-//	System.out.println("  -- The file will be saved as: "+filename);
-//	System.out.println("  -- Expecting to receive: "+bytesToReceive+" bytes");
-	
-	
-	// 2. Send an reply containing OK to the sender
 	theOutstream.write((new String("OK")).getBytes());
-//	System.out.println("receiving something");
-	
-	// 3. Receive the contents of the file
-	
-//	randOutput = new RandomAccessFile(new File(filename), "rw");
-//	randOutput.seek(startPointer);
-//	fileWriter = new FileOutputStream(filename);
 
 	while(bytesReceived < bytesToReceive-100) {
-//		if (bytesToReceive-bytesReceived < 100) {
-//			byte[] tmp = new byte[(int)(bytesToReceive-bytesReceived)];
-//			length = theInstream.read(tmp);
-//			largeBuffer.put(tmp);
-////			buffers.add((byte[])tmp.clone());
-//			System.out.println(s.getLocalPort()+"---"+length);
-////			fileWriter.write(tmp, 0,  length);
-//		} else {
-			length = theInstream.read(buffer);
-			largeBuffer.put(buffer, 0, length);
-//			buffers.add((byte[])buffer.clone());
-//			fileWriter.write(buffer, 0,  length);
-//		}
+
+		length = theInstream.read(buffer);
+		largeBuffer.put(buffer, 0, length);
 		bytesReceived = bytesReceived + length;
 	}
 	byte[] tmp = new byte[(int)(bytesToReceive-bytesReceived)];
@@ -108,10 +77,6 @@ public class TCPReceiver implements Runnable{
 	largeBuffer.put(tmp);
 
 	s.close();
-//	System.out.println(largeBuffer.capacity()+"---"+dst.length);
-//	largeBuffer.flip();
-//	largeBuffer.get(dst, 0, dst.length);
-//	fileWriter.write(dst);
     }
 
 	@Override
