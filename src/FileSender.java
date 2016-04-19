@@ -60,7 +60,7 @@ public static void main(String[] args) throws Exception
     public static void printError(String error)
     {
 	System.out.println(" - Error: "+error);
-	System.out.println(" - Usage: FileSender [protocol] [host] [port] [filename]");
+	System.out.println(" - Usage: FileSender [protocol] [host] [filename] [port]");
 	System.exit(1);
     }
 }
